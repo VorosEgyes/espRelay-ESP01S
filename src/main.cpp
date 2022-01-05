@@ -3,7 +3,6 @@
 
 
 #include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
-//needed for library
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
@@ -11,7 +10,6 @@
 #include <PubSubClient.h>
 #include "config.h"
 
-//!!!!
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -65,13 +63,10 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
       ESP.restart();
     } 
   }
-
-
 }
 
 void setup() {
   Serial.println("Booting");
-  //WiFi.mode(WIFI_STA);
   WiFiManager wifiManager;
   wifiManager.autoConnect("AutoConnectAP");
 
@@ -127,8 +122,6 @@ void setup() {
   client.setServer(MQTTSERVER, MQTTPORT);
   client.setCallback(subscribeReceive);
   reconnect();
-  
-  
 
   pinMode(RELAY,OUTPUT);
   digitalWrite(RELAY, LOW);
