@@ -13,9 +13,9 @@ EspRelay project is a very simple project to control a relay with ESP01S.
 
 In the example I used a 5V usb light. This is my way, you can choose yours. If you don't know how does it work, please don't use it.
 
-![soldering](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.JPG)
+![esp02](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.jpg)
 
-![cables](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.JPG)
+![esp03](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.JPG)
 
 ## Software
 
