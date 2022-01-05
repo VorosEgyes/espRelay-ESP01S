@@ -1,6 +1,6 @@
 # espRelay
 
-EspRelay project is a very simple project to control a relay by MQTT messages.
+EspRelay project is a very simple IOT project to control a relay by MQTT messages.
 
 ## Functions
 
