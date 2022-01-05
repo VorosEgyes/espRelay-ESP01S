@@ -15,7 +15,7 @@ In the example I used a 5V usb light. This is my way, you can choose yours. If y
 
 ![esp02](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.jpg)
 
-![esp03](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp03.JPG)
+![esp03](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp03.jpg)
 
 ## Software
 
