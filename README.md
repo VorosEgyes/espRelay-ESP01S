@@ -24,3 +24,10 @@ I use platformio ide.
 ### config.h
 
 Please edit your config.h according to your data.
+
+## Example
+
+Commands:
+mosquitto_pub -t "espRelay2/cmd" -m "RST"   // Reseting the ESP01
+mosquitto_pub -t "espRelay2/relay" -m "ON"  // Switch Relay ON
+mosquitto_pub -t "espRelay2/relay" -m "OFF" // Switch Relay OFF
