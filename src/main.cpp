@@ -1,63 +1,34 @@
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
-#include <ESP8266mDNS.h>
-#include <WiFiUdp.h>
 #include <ArduinoOTA.h>
-
-//#include <ESPAsyncTCP.h>
-//#include <ESPAsyncWebServer.h>
-//#include <WebSerial.h>
-//#include <ArduinoJson.h>
+#include <WiFiManager.h>
 
 #include <PubSubClient.h>
-
+#include "config.h"
 
 //!!!!
-const char* topic1 = "espRelay1/relay";
-const char* cmdtopic = "espRelay1/cmd";
-WiFiClient espRelay;
-PubSubClient client(espRelay);
-const char* willTopic = "espRelay1/availability";
-const String clientID = "espRelay1";
-
-const int mqttPort = 1883;
-const char* mqtt_server = "192.168.1.57";
-
-
-
-//AsyncWebServer server(80);
-
-#ifndef STASSID 
-#define STASSID "T-Home_5DBA64"
-#define STAPSK  "mnkx4gem"
-
-#endif
-
-const char* ssid = STASSID;
-const char* password = STAPSK;
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 #define RELAY 0 // relay connected to  GPIO0
 
 
-char uzenet[50];
-char celtopic_ch[50];
-void uzenj(String celtopic_str, String uzenet_str) {
-  uzenet_str.toCharArray(uzenet, uzenet_str.length() + 1);
-  celtopic_str.toCharArray(celtopic_ch, celtopic_str.length() + 1);
-  client.publish(celtopic_ch, uzenet);
+void send_message(String topic_str, String message_str) {
+  char message[50];
+  char topic_ch[50];
+  message_str.toCharArray(message, message_str.length() + 1);
+  topic_str.toCharArray(topic_ch, topic_str.length() + 1);
+  client.publish(topic_ch, message);
 }
-
-
-
 
 void reconnect() {
     while (!client.connected()) {
-      
-      if (client.connect(clientID.c_str(), NULL, NULL, willTopic, 0, false, "offline", true)) {
+      String clientId = "ESP8266Client-";
+      clientId += String(random(0xffff), HEX);  
+      if (client.connect(clientId.c_str(), NULL, NULL, WILLTOPIC, 0, false, "offline", true)) {
         Serial.println("MQTT connected");
-        client.publish(willTopic, "online");
-        client.subscribe(topic1);
-        client.subscribe(cmdtopic);
+        client.publish(WILLTOPIC, "online");
+        client.subscribe(RELAYTOPIC);
+        client.subscribe(CMDTOPIC);
       } else {
         Serial.println("MQTT NOT connected: ");
         Serial.print(client.state());
@@ -75,7 +46,7 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
   }
   Serial.print("Message: ");
   Serial.println(message);
-  if (strcmp(topic,topic1)==0){
+  if (strcmp(topic,RELAYTOPIC)==0){
     if (message == "ON")  {
       digitalWrite(RELAY,HIGH);
     } 
@@ -83,7 +54,7 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
       digitalWrite(RELAY,LOW);
     }
   }
-  if (strcmp(topic,cmdtopic)==0){
+  if (strcmp(topic,CMDTOPIC)==0){
     if (message == "RST")  {
       ESP.restart();
     } 
@@ -92,35 +63,18 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
 
 }
 
-
-/*
-void recvMsg(uint8_t *data, size_t len){
-  WebSerial.println("Received Data...");
-  String d = "";
-  for(int i=0; i < len; i++){
-    d += char(data[i]);
-  }
-  WebSerial.println(d);
-}*/
-
 void setup() {
-  
-
   Serial.println("Booting");
   WiFi.mode(WIFI_STA);
-
-  WiFi.begin(ssid, password);
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    Serial.println("Connection Failed! Rebooting...");
-    delay(5000);
-    ESP.restart();
-  }
+  WiFiManager wm;
+  bool res;
+  res = wm.autoConnect();  
 
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
 
   // Hostname defaults to esp8266-[ChipID]
-  ArduinoOTA.setHostname("espRelay1");
+  ArduinoOTA.setHostname(HOSTNAME);
 
   // No authentication by default
   // ArduinoOTA.setPassword("admin");
@@ -164,11 +118,8 @@ void setup() {
   Serial.println("Ready");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-/*  WebSerial.begin(&server);
-  WebSerial.msgCallback(recvMsg);
-  server.begin(); // WebSerial is accessible at "<IP Address>/webserial" in browser*/
 
-  client.setServer(mqtt_server, mqttPort);
+  client.setServer(MQTTSERVER, MQTTPORT);
   client.setCallback(subscribeReceive);
   reconnect();
   
@@ -176,21 +127,16 @@ void setup() {
 
   pinMode(RELAY,OUTPUT);
   digitalWrite(RELAY, LOW);
-//  WebSerial.println("Setup Ready");
-  uint32_t chipID = ESP.getChipId(); 
-  uzenj("espRelay1/status", "Setup finished" + String(chipID));
+
+  send_message("esp01Relay2/status", "Setup finished");
 }
 
 void loop() {
   ArduinoOTA.handle();
-  if (WiFi.status() == WL_CONNECTED) {
     if (!client.connected()) { 
         reconnect();
     } else {
       client.loop();
     }
-  } else {
-    ESP.restart();
-  }
-//
+
 }
