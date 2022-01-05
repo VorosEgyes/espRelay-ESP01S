@@ -1,6 +1,6 @@
 # espRelay
 
-EspRelay project is a very simple project to control a relay with ESP01S.
+EspRelay project is a very simple project to control a relay by MQTT messages.
 
 ## Functions
 
@@ -19,6 +19,9 @@ In the example I used a 5V usb light. This is my way, you can choose yours. If y
 
 ![esp03](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp03.jpg)
 
+For the first upload you will need an ESP01 programmer, i use this:
+![ESP01programmer](https://github.com/VorosEgyes/espRelay/blob/master/docs/ESP01programmer.jpg)
+
 ## Software
 
 I use platformio ide.
@@ -30,6 +33,6 @@ Please edit your config.h according to your data.
 ## Example
 
 Commands:
-mosquitto_pub -t "espRelay2/cmd" -m "RST"   // Reseting the ESP01
-mosquitto_pub -t "espRelay2/relay" -m "ON"  // Switch Relay ON
-mosquitto_pub -t "espRelay2/relay" -m "OFF" // Switch Relay OFF
+- mosquitto_pub -t "espRelay2/cmd" -m "RST"   // Reseting the ESP01
+- mosquitto_pub -t "espRelay2/relay" -m "ON"  // Switch Relay ON
+- mosquitto_pub -t "espRelay2/relay" -m "OFF" // Switch Relay OFF
