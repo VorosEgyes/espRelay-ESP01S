@@ -1,4 +1,4 @@
-# espRelay
+# espRelay - ESP01S relay controller
 
 EspRelay project is a very simple IOT project to control a relay by MQTT messages.
 
