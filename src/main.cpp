@@ -1,5 +1,11 @@
 #include <Arduino.h>
 #include <ArduinoOTA.h>
+
+
+#include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
+//needed for library
+#include <DNSServer.h>
+#include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 
 #include <PubSubClient.h>
@@ -65,10 +71,9 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
 
 void setup() {
   Serial.println("Booting");
-  WiFi.mode(WIFI_STA);
-  WiFiManager wm;
-  bool res;
-  res = wm.autoConnect();  
+  //WiFi.mode(WIFI_STA);
+  WiFiManager wifiManager;
+  wifiManager.autoConnect("AutoConnectAP");
 
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
@@ -128,7 +133,7 @@ void setup() {
   pinMode(RELAY,OUTPUT);
   digitalWrite(RELAY, LOW);
 
-  send_message("esp01Relay2/status", "Setup finished");
+  send_message(STATUSTOPIC, "Setup finished");
 }
 
 void loop() {
