@@ -9,17 +9,16 @@ EspRelay project is a very simple project to control a relay by MQTT messages.
 
 ## Hardware
 
-Because of the OTA update you need ESP01 with 1MB flash (ESP01*S*)!
+Because of the OTA update you need ESP01 with 1MB flash (ESP01**S**)! In this example I used a 5V usb light. This is my way, you can choose yours. If you don't know how does it work, please don't use it.
 
 ![ESP01S](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp01.JPG)
-
-In the example I used a 5V usb light. This is my way, you can choose yours. If you don't know how does it work, please don't use it.
 
 ![esp02](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.jpg)
 
 ![esp03](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp03.jpg)
 
 For the first upload you will need an ESP01 programmer, i use this:
+
 ![ESP01programmer](https://github.com/VorosEgyes/espRelay/blob/master/docs/ESP01programmer.jpg)
 
 ## Software
