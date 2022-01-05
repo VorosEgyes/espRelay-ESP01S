@@ -138,10 +138,11 @@ void setup() {
 
 void loop() {
   ArduinoOTA.handle();
+  if (WiFi.status() == WL_CONNECTED) {
     if (!client.connected()) { 
         reconnect();
     } else {
       client.loop();
     }
-
+  }
 }
