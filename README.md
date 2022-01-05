@@ -9,6 +9,8 @@ EspRelay project is a very simple project to control a relay with ESP01S.
 
 ## Hardware
 
+Because of the OTA update you need ESP01 with 1MB flash (ESP01*S*)!
+
 ![ESP01S](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp01.JPG)
 
 In the example I used a 5V usb light. This is my way, you can choose yours. If you don't know how does it work, please don't use it.
