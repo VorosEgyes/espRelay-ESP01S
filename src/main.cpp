@@ -68,6 +68,7 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
 void setup() {
   Serial.println("Booting");
   WiFiManager wifiManager;
+  WiFi.hostname(HOSTNAME);
   wifiManager.autoConnect("AutoConnectAP");
 
   // Port defaults to 8266
