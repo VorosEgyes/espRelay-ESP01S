@@ -3,7 +3,34 @@
   <head>
 	<meta name="google-site-verification" content="82jRuhnAfURI1ecwVvzJgV4eWPrbTdagGnp_E0714r0" />
   </head>
-  <body>
-  <a href="https://github.com/VorosEgyes/espRelay-ESP01S">VorosEgyes espRelay ESP01S</a>
-  </body>
+<h1 id="esprelay-esp01s-relay-controller">espRelay - ESP01S relay controller</h1>
+<p>EspRelay project is a very simple IOT project to control a relay by MQTT messages.</p>
+<p><a href="https://github.com/VorosEgyes/espRelay-ESP01S">Github: VorosEgyes espRelay ESP01S</a><p>
+<h2 id="functions">Functions</h2>
+<ul>
+<li>control a relay with MQTT messages</li>
+<li>OTA firmware update</li>
+</ul>
+<h2 id="hardware">Hardware</h2>
+<p>Because of the OTA update you need ESP01 with 1MB flash (ESP01<strong>S</strong>)! In this example I used a 5V usb light. This is my way, you can choose yours. If you don&#39;t know how does it work, please don&#39;t use it.</p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/esp01.JPG" alt="ESP01S"></p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.jpg" alt="esp02"></p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/esp03.jpg" alt="esp03"></p>
+<p>For the first upload you will need an ESP01 programmer, i use this:</p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/ESP01programmer.jpg" alt="ESP01programmer"></p>
+<h2 id="software">Software</h2>
+<p>I use platformio ide.</p>
+<h3 id="config-h">config.h</h3>
+<p>Please edit your config.h according to your data.</p>
+<h2 id="example">Example</h2>
+<p>Commands:</p>
+<ul>
+<li>mosquitto_pub -t &quot;espRelay2/cmd&quot; -m &quot;RST&quot;   // Reseting the ESP01</li>
+<li>mosquitto_pub -t &quot;espRelay2/relay&quot; -m &quot;ON&quot;  // Switch Relay ON</li>
+<li>mosquitto_pub -t &quot;espRelay2/relay&quot; -m &quot;OFF&quot; // Switch Relay OFF</li>
+</ul>
+
+
+
+
 </html>	
