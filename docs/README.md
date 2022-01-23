@@ -20,6 +20,7 @@ Because of the OTA update you need ESP01 with 1MB flash (ESP01**S**)! In this ex
 For the first upload you will need an ESP01 programmer, i use this:
 
 ![ESP01programmer](https://github.com/VorosEgyes/espRelay/blob/master/docs/ESP01programmer.jpg)
+
 More info: https://www.diyhobi.com/flash-program-esp-01-using-usb-serial-adapter/
 
 ## Software
@@ -30,12 +31,12 @@ Edit your platformio.ini file and make your first upload.
 Arduino IDE
 Copy and paste the content of the src\main.cpp into a new Arduino IDE sketch and copy the config.h file in your saved ardunio file. In the Library Manager you have to install:
 
-ArduinoOta        : for OTA firmware update
-ESP8266WiFi       : for Wifi
-DNSServer.h       : for Wifi
-ESP8266WebServer  : for WifiManager
-WiFiManager       : WifiManager
-PubSubClient      : MQTT
+- ArduinoOta        : for OTA firmware update
+- ESP8266WiFi       : for Wifi
+- DNSServer.h       : for Wifi
+- ESP8266WebServer  : for WifiManager
+- WiFiManager       : WifiManager
+- PubSubClient      : MQTT
 
 ### config.h
 
