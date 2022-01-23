@@ -47,7 +47,7 @@ Please edit your config.h according to your parameters.
 ## Wifi
 
 After your first upload search for EspRelayAP wifi network, and in the browser choose your LAN.
-https://github.com/tzapu/WiFiManager#how-it-works
+Further help: https://github.com/tzapu/WiFiManager#how-it-works
 
 ## Example
 
