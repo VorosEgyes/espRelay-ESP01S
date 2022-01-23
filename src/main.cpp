@@ -52,10 +52,10 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
   Serial.println(message);
   if (strcmp(topic,RELAYTOPIC)==0){
     if (message == "ON")  {
-      digitalWrite(RELAY,HIGH);
+      digitalWrite(RELAY,LOW);
     } 
     if (message == "OFF") { 
-      digitalWrite(RELAY,LOW);
+      digitalWrite(RELAY,HIGH);
     }
   }
   if (strcmp(topic,CMDTOPIC)==0){
@@ -69,7 +69,7 @@ void setup() {
   Serial.println("Booting");
   WiFiManager wifiManager;
   WiFi.hostname(HOSTNAME);
-  wifiManager.autoConnect("AutoConnectAP");
+  wifiManager.autoConnect("EspRelayAP");
 
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
