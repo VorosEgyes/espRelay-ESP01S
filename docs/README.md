@@ -27,10 +27,10 @@ More info: https://www.diyhobi.com/flash-program-esp-01-using-usb-serial-adapter
 
 https://github.com/VorosEgyes/espRelay-ESP01S
 
-Platformio IDE
+### Platformio IDE
 Edit your platformio.ini file and make your first upload.
 
-Arduino IDE
+### Arduino IDE
 Copy and paste the content of the src\main.cpp into a new Arduino IDE sketch and copy the config.h file in your saved ardunio file. In the Library Manager you have to install:
 
 - ArduinoOta        : for OTA firmware update
