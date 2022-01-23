@@ -5,23 +5,38 @@
   </head>
 <h1 id="esprelay-esp01s-relay-controller">espRelay - ESP01S relay controller</h1>
 <p>EspRelay project is a very simple IOT project to control a relay by MQTT messages.</p>
-<p><a href="https://github.com/VorosEgyes/espRelay-ESP01S">Github: VorosEgyes espRelay ESP01S</a><p>
 <h2 id="functions">Functions</h2>
 <ul>
 <li>control a relay with MQTT messages</li>
-<li>OTA firmware update</li>
+<li>OTA (On-The-Air) firmware update</li>
 </ul>
 <h2 id="hardware">Hardware</h2>
 <p>Because of the OTA update you need ESP01 with 1MB flash (ESP01<strong>S</strong>)! In this example I used a 5V usb light. This is my way, you can choose yours. If you don&#39;t know how does it work, please don&#39;t use it.</p>
-<p><img src="docs/esp01.JPG" alt="relay"></p>
-<p><img src="docs/esp02.jpg" alt="soldering1"></p>
-<p><img src="docs/esp03.jpg" alt="soldering2"></p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/esp01.JPG" alt="ESP01S"></p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.jpg" alt="esp02"></p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/esp03.jpg" alt="esp03"></p>
 <p>For the first upload you will need an ESP01 programmer, i use this:</p>
-<p><img src="docs/ESP01programmer.jpg" alt="ESP01programmer"></p>
+<p><img src="https://github.com/VorosEgyes/espRelay/blob/master/docs/ESP01programmer.jpg" alt="ESP01programmer"></p>
+<p>More info: <a href="https://www.diyhobi.com/flash-program-esp-01-using-usb-serial-adapter/">https://www.diyhobi.com/flash-program-esp-01-using-usb-serial-adapter/</a></p>
 <h2 id="software">Software</h2>
-<p>I use platformio ide.</p>
+<p><a href="https://github.com/VorosEgyes/espRelay-ESP01S">https://github.com/VorosEgyes/espRelay-ESP01S</a></p>
+<h3 id="platformio-ide">Platformio IDE</h3>
+<p>Edit your platformio.ini file and make your first upload.</p>
+<h3 id="arduino-ide">Arduino IDE</h3>
+<p>Copy and paste the content of the src\main.cpp into a new Arduino IDE sketch and copy the config.h file in your saved ardunio file. In the Library Manager you have to install:</p>
+<ul>
+<li>ArduinoOta        : for OTA firmware update</li>
+<li>ESP8266WiFi       : for Wifi</li>
+<li>DNSServer.h       : for Wifi</li>
+<li>ESP8266WebServer  : for WifiManager</li>
+<li>WiFiManager       : WifiManager</li>
+<li>PubSubClient      : MQTT</li>
+</ul>
 <h3 id="config-h">config.h</h3>
-<p>Please edit your config.h according to your data.</p>
+<p>Please edit your config.h according to your parameters.</p>
+<h2 id="wifi">Wifi</h2>
+<p>After your first upload search for EspRelayAP wifi network, and in the browser choose your LAN.
+Further help: <a href="https://github.com/tzapu/WiFiManager#how-it-works">https://github.com/tzapu/WiFiManager#how-it-works</a></p>
 <h2 id="example">Example</h2>
 <p>Commands:</p>
 <ul>
@@ -29,8 +44,4 @@
 <li>mosquitto_pub -t &quot;espRelay2/relay&quot; -m &quot;ON&quot;  // Switch Relay ON</li>
 <li>mosquitto_pub -t &quot;espRelay2/relay&quot; -m &quot;OFF&quot; // Switch Relay OFF</li>
 </ul>
-
-
-
-
 </html>	
