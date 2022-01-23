@@ -25,6 +25,8 @@ More info: https://www.diyhobi.com/flash-program-esp-01-using-usb-serial-adapter
 
 ## Software
 
+https://github.com/VorosEgyes/espRelay-ESP01S
+
 Platformio IDE
 Edit your platformio.ini file and make your first upload.
 
