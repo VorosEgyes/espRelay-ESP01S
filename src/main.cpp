@@ -51,10 +51,10 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
   Serial.print("Message: ");
   Serial.println(message);
   if (strcmp(topic,RELAYTOPIC)==0){
-    if (message == "ON")  {
+    if (message == "OFF")  {
       digitalWrite(RELAY,LOW);
     } 
-    if (message == "OFF") { 
+    if (message == "ON") { 
       digitalWrite(RELAY,HIGH);
     }
   }
@@ -132,11 +132,11 @@ void setup() {
 
 void loop() {
   ArduinoOTA.handle();
+  client.loop();
   if (WiFi.status() == WL_CONNECTED) {
     if (!client.connected()) { 
         reconnect();
     } else {
-      client.loop();
     }
   }
 }
