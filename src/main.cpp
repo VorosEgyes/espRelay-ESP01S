@@ -51,15 +51,20 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
   Serial.print("Message: ");
   Serial.println(message);
   if (strcmp(topic,RELAYTOPIC)==0){
-    if (message == "OFF")  {
+    if (message == "ON")  {
       digitalWrite(RELAY,LOW);
+      client.publish(WILLTOPIC, "online");
+      send_message(STATUSTOPIC, "Relay switched ON");
     } 
-    if (message == "ON") { 
+    if (message == "OFF") { 
       digitalWrite(RELAY,HIGH);
+      client.publish(WILLTOPIC, "online");
+      send_message(STATUSTOPIC, "Relay switched OFF");
     }
   }
   if (strcmp(topic,CMDTOPIC)==0){
     if (message == "RST")  {
+        send_message(STATUSTOPIC, "Reseting...");
       ESP.restart();
     } 
   }
@@ -125,18 +130,29 @@ void setup() {
   reconnect();
 
   pinMode(RELAY,OUTPUT);
-  digitalWrite(RELAY, LOW);
+  digitalWrite(RELAY, HIGH); //default off
 
+  
+  String ipaddress = WiFi.localIP().toString();
+  send_message(STATUSTOPIC, "\"ip\": "+ ipaddress);
   send_message(STATUSTOPIC, "Setup finished");
 }
 
 void loop() {
   ArduinoOTA.handle();
   client.loop();
+  static unsigned long Timepoint = millis();
   if (WiFi.status() == WL_CONNECTED) {
     if (!client.connected()) { 
         reconnect();
     } else {
     }
   }
+  if (millis()-Timepoint > 300000U) {
+    Timepoint = millis();
+    client.publish(WILLTOPIC, "online");
+    String ipaddress = WiFi.localIP().toString();
+    send_message(STATUSTOPIC, "\"ip\": "+ ipaddress);
+  }
+
 }
