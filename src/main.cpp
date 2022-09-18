@@ -134,7 +134,7 @@ void setup() {
 
   
   String ipaddress = WiFi.localIP().toString();
-  send_message(STATUSTOPIC, "\"ip\": "+ ipaddress);
+  send_message(STATUSTOPIC, "{\"ip\":"+ ipaddress+"}");
   send_message(STATUSTOPIC, "Setup finished");
 }
 
@@ -152,7 +152,7 @@ void loop() {
     Timepoint = millis();
     client.publish(WILLTOPIC, "online");
     String ipaddress = WiFi.localIP().toString();
-    send_message(STATUSTOPIC, "\"ip\": "+ ipaddress);
+    send_message(STATUSTOPIC, "{\"ip\":"+ ipaddress+"}");
   }
 
 }
