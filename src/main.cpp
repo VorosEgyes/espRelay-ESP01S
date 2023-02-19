@@ -13,9 +13,6 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-#define RELAY 0 // relay connected to  GPIO0
-
-
 void send_message(String topic_str, String message_str) {
   char message[50];
   char topic_ch[50];
@@ -52,12 +49,14 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length)
   Serial.println(message);
   if (strcmp(topic,RELAYTOPIC)==0){
     if (message == "ON")  {
-      digitalWrite(RELAY,LOW);
+      if (INVERSED == 0) digitalWrite(RELAY,LOW);
+      if (INVERSED == 1) digitalWrite(RELAY,HIGH);
       client.publish(WILLTOPIC, "online");
       send_message(STATUSTOPIC, "Relay switched ON");
     } 
     if (message == "OFF") { 
-      digitalWrite(RELAY,HIGH);
+      if (INVERSED == 0) digitalWrite(RELAY,HIGH);
+      if (INVERSED == 1) digitalWrite(RELAY,LOW);
       client.publish(WILLTOPIC, "online");
       send_message(STATUSTOPIC, "Relay switched OFF");
     }
@@ -74,7 +73,7 @@ void setup() {
   Serial.println("Booting");
   WiFiManager wifiManager;
   WiFi.hostname(HOSTNAME);
-  wifiManager.autoConnect("EspRelayAP");
+  wifiManager.autoConnect(HOSTNAME);
 
   // Port defaults to 8266
   // ArduinoOTA.setPort(8266);
@@ -130,7 +129,8 @@ void setup() {
   reconnect();
 
   pinMode(RELAY,OUTPUT);
-  digitalWrite(RELAY, HIGH); //default off
+  if (INVERSED == 0) digitalWrite(RELAY, HIGH); //default off
+  if (INVERSED == 1) digitalWrite(RELAY, LOW); //default off
 
   
   String ipaddress = WiFi.localIP().toString();
