@@ -36,38 +36,44 @@ void reconnect() {
       }
     }
 }
-void subscribeReceive(char* topic, byte* payload, unsigned int length)
-{
+void subscribeReceive(char* topic, byte* payload, unsigned int length) {
   String message;
+  
+  // Print the received topic and message to the Serial monitor
   Serial.print("Topic: ");
   Serial.println(topic);
-  for (int i = 0; i < length; i ++)
-  {
+  for (int i = 0; i < length; i ++) {
     message += (char)payload[i];
   }
   Serial.print("Message: ");
   Serial.println(message);
-  if (strcmp(topic,RELAYTOPIC)==0){
+  
+  // Check if the received topic is the relay topic
+  if (strcmp(topic,RELAYTOPIC)==0) {
+    // If the message is "ON", switch the relay ON and publish "Relay switched ON" message
     if (message == "ON")  {
-      if (INVERSED == 0) digitalWrite(RELAY,LOW);
-      if (INVERSED == 1) digitalWrite(RELAY,HIGH);
-      client.publish(WILLTOPIC, "online");
+      digitalWrite(RELAY, INVERSED == 0 ? LOW : HIGH);
+      send_message(WILLTOPIC, "online");
       send_message(STATUSTOPIC, "Relay switched ON");
     } 
+    // If the message is "OFF", switch the relay OFF and publish "Relay switched OFF" message
     if (message == "OFF") { 
-      if (INVERSED == 0) digitalWrite(RELAY,HIGH);
-      if (INVERSED == 1) digitalWrite(RELAY,LOW);
-      client.publish(WILLTOPIC, "online");
+      digitalWrite(RELAY, INVERSED == 0 ? HIGH : LOW);
+      send_message(WILLTOPIC, "online");
       send_message(STATUSTOPIC, "Relay switched OFF");
     }
   }
-  if (strcmp(topic,CMDTOPIC)==0){
+  
+  // Check if the received topic is the command topic
+  if (strcmp(topic,CMDTOPIC)==0) {
+    // If the message is "RST", restart the device and publish "Reseting..." message
     if (message == "RST")  {
         send_message(STATUSTOPIC, "Reseting...");
       ESP.restart();
     } 
   }
 }
+
 
 void setup() {
   Serial.println("Booting");
@@ -139,20 +145,23 @@ void setup() {
 }
 
 void loop() {
-  ArduinoOTA.handle();
-  client.loop();
-  static unsigned long Timepoint = millis();
-  if (WiFi.status() == WL_CONNECTED) {
-    if (!client.connected()) { 
-        reconnect();
-    } else {
-    }
-  }
-  if (millis()-Timepoint > 300000U) {
-    Timepoint = millis();
-    client.publish(WILLTOPIC, "online");
-    String ipaddress = WiFi.localIP().toString();
-    send_message(STATUSTOPIC, "{\"ip\":"+ ipaddress+"}");
+  ArduinoOTA.handle(); // Handle Over The Air updates
+  client.loop(); // Handle MQTT client events
+
+  static unsigned long lastTimepoint = 0;
+  unsigned long currentTime = millis();
+
+  // Reconnect to MQTT broker if necessary
+  if (WiFi.status() == WL_CONNECTED && !client.connected()) { 
+      reconnect();
   }
 
+  // Publish status message every 5 minutes
+  if (currentTime - lastTimepoint > 300000U) {
+    lastTimepoint = currentTime;
+    client.publish(WILLTOPIC, "online");
+    send_message(STATUSTOPIC, "{\"ip\":"+ WiFi.localIP().toString() +"}");
+  }
 }
+
+
