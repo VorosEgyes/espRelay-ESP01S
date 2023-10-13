@@ -1,6 +1,9 @@
 # espRelay - ESP01S relay controller
 
-EspRelay project is a very simple IOT project to control a relay by MQTT messages.
+EspRelay project is a very simple IOT project to control a relay by MQTT messages. 
+
+## Notes
+Dual Relay capability added
 
 ## Functions
 
@@ -53,5 +56,5 @@ Further help: https://github.com/tzapu/WiFiManager#how-it-works
 
 Commands:
 - mosquitto_pub -t "espRelay2/cmd" -m "RST"   // Reseting the ESP01
-- mosquitto_pub -t "espRelay2/relay" -m "ON"  // Switch Relay ON
-- mosquitto_pub -t "espRelay2/relay" -m "OFF" // Switch Relay OFF
+- mosquitto_pub -t "espRelay2/relay1" -m "ON"  // Switch Relay1 ON
+- mosquitto_pub -t "espRelay2/relay1" -m "OFF" // Switch Relay1 OFF
