@@ -25,9 +25,9 @@ void reconnect() {
     while (!client.connected()) {
       String clientId = "ESP8266Client-";
       clientId += String(random(0xffff), HEX);  
-      if (client.connect(clientId.c_str(), NULL, NULL, WILLTOPIC, 0, false, "offline", true)) {
+      if (client.connect(clientId.c_str(), NULL, NULL, WILLTOPIC, 0, true, "offline", true)) {
         Serial.println("MQTT connected");
-        client.publish(WILLTOPIC, "online");
+        client.publish(WILLTOPIC, "online", true);
         client.subscribe(RELAYTOPIC);
         client.subscribe(CMDTOPIC);
       } else {
