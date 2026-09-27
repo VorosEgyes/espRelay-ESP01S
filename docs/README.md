@@ -14,6 +14,8 @@ Dual Relay capability added
 
 Because of the OTA update you need ESP01 with 1MB flash (ESP01**S**)! In this example I used a 5V usb light. This is my way, you can choose yours. If you don't know how does it work, please don't use it.
 
+**Note on GPIO0:** `#define RELAY 0` uses GPIO0 as the relay output. GPIO0 is also the ESP8266 boot-mode select pin — if the relay board pulls GPIO0 LOW at power-on, the ESP will boot into flash-program mode instead of running your sketch. Use an optocoupled relay module (galvanic isolation between GPIO0 and the relay coil), or move the relay to a different GPIO and update `#define RELAY` in `src/config.h` accordingly.
+
 ![ESP01S](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp01.JPG)
 
 ![esp02](https://github.com/VorosEgyes/espRelay/blob/master/docs/esp02.jpg)

@@ -1,5 +1,5 @@
 #define INVERSED 1                          // if soldered for other pin
-#define RELAY 0                             // relay connected to  GPIO0
+#define RELAY 0                             // relay connected to GPIO0 (use optocoupled relay module!)
 #define HOSTNAME "espRelay5"                // network hostname
 #define RELAYTOPIC "espRelay5/relay"        // topic of relay message can be: "ON" or "OFF"
 #define CMDTOPIC "espRelay5/cmd"            // command topic: message can be "RST" = reset the ESP
