@@ -16,15 +16,17 @@ PubSubClient client(espClient);
 void send_message(String topic_str, String message_str) {
   char message[50];
   char topic_ch[50];
-  message_str.toCharArray(message, message_str.length() + 1);
-  topic_str.toCharArray(topic_ch, topic_str.length() + 1);
-  client.publish(topic_ch, message);
+  size_t mlen = message_str.toCharArray(message, sizeof(message));
+  size_t tlen = topic_str.toCharArray(topic_ch, sizeof(topic_ch));
+  if (mlen == 0 || tlen == 0) return;  // string did not fit in buffer
+  client.publish(topic_ch, message, mlen);
 }
 
 void reconnect() {
     while (!client.connected()) {
       String clientId = "ESP8266Client-";
       clientId += String(random(0xffff), HEX);  
+      delay(1000);  // brief backoff to avoid WDT reset when broker is down
       if (client.connect(clientId.c_str(), NULL, NULL, WILLTOPIC, 0, true, "offline", true)) {
         Serial.println("MQTT connected");
         client.publish(WILLTOPIC, "online", true);
@@ -45,19 +47,20 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length) {
   for (int i = 0; i < length; i ++) {
     message += (char)payload[i];
   }
+  message.trim();
   Serial.print("Message: ");
   Serial.println(message);
   
   // Check if the received topic is the relay topic
   if (strcmp(topic,RELAYTOPIC)==0) {
     // If the message is "ON", switch the relay ON and publish "Relay switched ON" message
-    if (message == "ON")  {
+    if (message.equalsIgnoreCase("ON"))  {
       digitalWrite(RELAY, INVERSED == 0 ? LOW : HIGH);
       send_message(WILLTOPIC, "online");
       send_message(STATUSTOPIC, "Relay switched ON");
     } 
     // If the message is "OFF", switch the relay OFF and publish "Relay switched OFF" message
-    if (message == "OFF") { 
+    if (message.equalsIgnoreCase("OFF")) { 
       digitalWrite(RELAY, INVERSED == 0 ? HIGH : LOW);
       send_message(WILLTOPIC, "online");
       send_message(STATUSTOPIC, "Relay switched OFF");
@@ -67,7 +70,7 @@ void subscribeReceive(char* topic, byte* payload, unsigned int length) {
   // Check if the received topic is the command topic
   if (strcmp(topic,CMDTOPIC)==0) {
     // If the message is "RST", restart the device and publish "Reseting..." message
-    if (message == "RST")  {
+    if (message.equalsIgnoreCase("RST"))  {
         send_message(STATUSTOPIC, "Reseting...");
       ESP.restart();
     } 
@@ -150,6 +153,7 @@ void loop() {
 
   static unsigned long lastTimepoint = 0;
   unsigned long currentTime = millis();
+  if (lastTimepoint == 0) lastTimepoint = currentTime;  // first heartbeat 5 min after boot
 
   // Reconnect to MQTT broker if necessary
   if (WiFi.status() == WL_CONNECTED && !client.connected()) {
