@@ -152,9 +152,8 @@ void loop() {
   unsigned long currentTime = millis();
 
   // Reconnect to MQTT broker if necessary
-  if (WiFi.status() == WL_CONNECTED && !client.connected()) { 
-    delay(5000);
-    ESP.restart();
+  if (WiFi.status() == WL_CONNECTED && !client.connected()) {
+    reconnect();
   }
 
   // Publish status message every 5 minutes
